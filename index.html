@@ -1,41 +1,68 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>GoLive App</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form { background: #000; padding: 3px; position: fixed; left: 1000px; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 17%; margin-right: 0.5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
+      #messages li { padding: 5px; } 
       #messages li:nth-child(odd) { background: #eee; }
     </style>
   </head>
 
   <script src="/socket.io/socket.io.js"></script>
 
-  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>       
 
   <script>
-    $(function () {
+    $(document).ready(function() {
+
+       $.ajax({
+   url: 'http://localhost:3001/tasks/5a579e387c28e228083e9fba',
+   data: {
+      format: 'json'
+   },
+   error: function() {
+     $("#rest1").append("--> Rest1 gave Error!!!");
+   },
+   dataType: 'jsonp',
+   success: function(data) {
+      $("#rest1").append(JSON.stringify(data._id));
+   },
+   type: 'GET'
+});
+
       var socket = io();
       $('form').submit(function(){
-        socket.emit('chat message', $('#message').val());
+        socket.emit('chat', $('#message').val());
+        
         $('#message').val('');
+        //This works - $("#rest1").append("_Test");
         return false;
       });
-      socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
-      });
+
+      socket.on('chat', function(msg){
+        $('#messages').append($('<li>').text(msg)); 
+      });        
+     
     });
   </script>
 
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="message" autocomplete="off" /><button>Send</button>
-    </form>
-  </body>
+    <div class="wrapper1">
+        <ul id="messages"></ul>
+            <form action="">
+                 <input id="message" autocomplete="off" /><button>Send</button>
+                 <input id="receipts" autocomplete="off" /><button>Receipts</button>
+            </form>
+    </div>
+    <div class="wrapper2">        
+        <p id="rest1">The Rest endpoint id extracted from Mongodb is </p>
+        <p id="rest2">The Rest endpoint name extracted from Mongodb is </p>
+    </div>
+    </body>
 </html>
