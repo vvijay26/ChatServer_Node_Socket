@@ -3,14 +3,33 @@
   <head>
     <title>GoLive App</title>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+      /* 
+      * { margin: 0; padding: 0; box-sizing: border-box; } 
       body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; left: 1000px; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 17%; margin-right: 0.5%; }
+      form { background: #000; padding: 3px; position: fixed; left: 977px; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 17%; margin-right: 0.5%;}
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages { list-style-type: none; margin: 0px; padding: 0; }
       #messages li { padding: 5px; } 
       #messages li:nth-child(odd) { background: #eee; }
+      */
+      /* Responsive Attributes */
+      
+
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 0.2%; position: fixed; left: 71.6%; bottom: 0; width: 100%; }
+      form input { border: none; padding: 0.7%; width: 17.2%; margin-right: 0.5%;}
+      form button { width: 8.8%; background: rgb(130, 224, 255); border: none; padding: 0.7%; }
+      #messages { list-style-type: none; padding: 3px; position: fixed; left: 71.6%; bottom: 30px; width: 100%; }
+      #messages li { padding: 5px; left: 71.6%;; width: 25%;} 
+      #messages li:nth-child(odd) { background: #eee;left: 71.6%;; width: 25%; }
+
+      .wrapper2 { 
+        background-color: none ;
+        width: 70%;
+      }
+
+
     </style>
   </head>
 
@@ -69,24 +88,23 @@
      $("#rest1").html(" ");
      $("#rest2").html(" ");
      //Refresh data
-     $("#rest1").append(" The Rest endpoint id extracted from Mongodb is (using AJAX call) --> ", data._id, " ---  Data as of -> ", dt);
-     $("#rest2").append(" he Rest endpoint name extracted from Mongodb is (using AJAX call)--> ", data.name, " ---  Data as of -> ", dt);
+     $("#rest1").append("_id value is (AJAX REST Call) --> ", data._id, " ---  Data as of -> ", dt);
+     $("#rest2").append("name value is (AJAX REST Call) --> ", data.name, " ---  Data as of -> ", dt);
    },
    type: 'GET'
 })};
 </script>
 
   <body>
-    <div class="wrapper1">
+    <div class="wrapper1" >
         <ul id="messages"></ul>
             <form action="">
                  <input id="message" autocomplete="off" /><button>Send</button>
-                 <input id="receipts" autocomplete="off" /><button>Receipts</button>
             </form>
     </div>
     <div class="wrapper2">        
-        <p id="rest1">_id data is retrieved every 5 seconds and refreshed using AJAX (no full browser refresh!) </p>
-        <p id="rest2">name data is retrieved every 5 seconds and refreshed using AJAX (no full browser refresh!)</p>
+        <p id="rest1">  &nbsp&nbsp_id data is retrieved every 5 seconds and refreshed using AJAX (no full browser refresh!) </p>
+        <p id="rest2"> &nbsp&nbspname data is retrieved every 5 seconds and refreshed using AJAX (no full browser refresh!)</p>
     </div>
     </body>
 </html>
