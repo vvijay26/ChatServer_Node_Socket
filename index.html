@@ -21,20 +21,13 @@
   <script>
     $(document).ready(function() {
 
-       $.ajax({
-   url: 'http://localhost:3001/tasks/5a579e387c28e228083e9fba',
-   data: {
-      format: 'json'
-   },
-   error: function() {
-     $("#rest1").append("--> Rest1 gave Error!!!");
-   },
-   dataType: 'jsonp',
-   success: function(data) {
-      $("#rest1").append(JSON.stringify(data._id));
-   },
-   type: 'GET'
-});
+       // Calls the ajax function (defined in a separate script tag below) to retrieve the data
+       // from Mongo rest endpoint on port 3001.
+       // Calling the function likes this makes the code more readable. Also, easier to handle 
+       // auto-refresh using these ajax calls (prevent full browser refresh!)
+       window.setInterval(function(){
+       ajax_call() ;
+       }, 5000); //Auto refresh every 5000 milliseconds
 
       var socket = io();
       $('form').submit(function(){
@@ -52,6 +45,37 @@
     });
   </script>
 
+  <script> //This portion is for defining specific functions used in the script above.
+
+    //Defining the ajax function below
+    function ajax_call() { $.ajax({
+   url: 'http://localhost:3001/tasks/5a579e387c28e228083e9fba',
+   data: {
+      format: 'json'
+   },
+   cache: false,
+   error: function() {
+     $("#rest1").append("--> Rest1 gave Error!!!");
+   },
+   success: function(data) {
+     //----Test code-----
+     //$("#rest1").append("--> NOOOO Error!!!");
+     //$("#rest1").append(JSON.stringify(data._id));
+     //$("#rest2").append(JSON.stringify(data.name));
+     //----End Test Code-----
+     //Fetch current time to reflect time of last refresh
+     var dt = new Date();
+     //Clear the tags, so refresh does not append everytime
+     $("#rest1").html(" ");
+     $("#rest2").html(" ");
+     //Refresh data
+     $("#rest1").append(" The Rest endpoint id extracted from Mongodb is (using AJAX call) --> ", data._id, " ---  Data as of -> ", dt);
+     $("#rest2").append(" he Rest endpoint name extracted from Mongodb is (using AJAX call)--> ", data.name, " ---  Data as of -> ", dt);
+   },
+   type: 'GET'
+})};
+</script>
+
   <body>
     <div class="wrapper1">
         <ul id="messages"></ul>
@@ -61,8 +85,8 @@
             </form>
     </div>
     <div class="wrapper2">        
-        <p id="rest1">The Rest endpoint id extracted from Mongodb is </p>
-        <p id="rest2">The Rest endpoint name extracted from Mongodb is </p>
+        <p id="rest1">_id data is retrieved every 5 seconds and refreshed using AJAX (no full browser refresh!) </p>
+        <p id="rest2">name data is retrieved every 5 seconds and refreshed using AJAX (no full browser refresh!)</p>
     </div>
     </body>
 </html>
